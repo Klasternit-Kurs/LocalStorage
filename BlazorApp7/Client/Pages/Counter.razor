@@ -1,0 +1,44 @@
+﻿@page "/counter"
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorSync
+
+
+
+<h1>Counter</h1>
+<p>@nekoTest.bla</p>
+
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+
+	private int currentCount = 0;
+
+	Test nekoTest = new Test();
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		if (localStorSync.ContainKey("Broj"))
+		{
+			currentCount = localStorSync.GetItem<int>("Broj");
+		}
+
+		nekoTest = localStorSync.GetItem<Test>("tt");
+	}
+
+	private void IncrementCount()
+	{
+		localStorSync.SetItem("Broj", ++currentCount);
+		localStorSync.SetItem("tt", nekoTest);
+	}
+
+
+	public class Test
+	{
+		public string bla { get; set; }
+	}
+}
